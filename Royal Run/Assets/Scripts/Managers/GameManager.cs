@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -7,7 +9,12 @@ public class GameManager : MonoBehaviour {
     [SerializeField] TMP_Text timeText;
     [SerializeField] float startTime = 5f;
 
-    [SerializeField] GameObject gameOverText;
+    [SerializeField] GameObject gameOverUI;
+
+    #region vida player
+     public float playerLife = 1f;
+    public Scrollbar scrollbar;
+    #endregion
 
     float timeLeft;
 
@@ -23,6 +30,8 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         DecreseTime();
+
+        scrollbar.size = playerLife;
     }
 
     public void IncreaseTime(float amount){
@@ -42,10 +51,21 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void PlayerGameOver(){
+    public void PlayerGameOver(){
         gameOver = true;
         playerController.enabled = false;
-        gameOverText.SetActive(true);
-        Time.timeScale = .1f;
+        
+        gameOverUI.SetActive(true);
+
+        Time.timeScale = 0f;
+    }
+
+    public void RestartGame(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1f;
+    }
+
+    public void BlockRoom(){
+        Application.OpenURL("https://store.steampowered.com/app/2660980/Block_Room/");
     }
 }

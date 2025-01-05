@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class PlayerCollisionHandler : MonoBehaviour
-{
+public class PlayerCollisionHandler : MonoBehaviour {
+
+    public GameManager gameManager;
+
     [SerializeField] float collisionCooldown = 1f;
     float cooldownTimer = 0f;
 
@@ -26,6 +28,12 @@ public class PlayerCollisionHandler : MonoBehaviour
         if(cooldownTimer < collisionCooldown) return;
 
         levelGenerator.ChangeChunkMoveSpeed(adjustChangeMoveSpeedAmount);
+
+        if(gameManager.playerLife > 0.1f){
+            gameManager.playerLife -= 0.2f;
+        }else{
+            gameManager.PlayerGameOver();
+        }
 
         animator.SetTrigger(StumbleAnimation);
         cooldownTimer = 0f;
